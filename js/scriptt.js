@@ -1,2 +1,2 @@
 "use strict";
-console.log(2);
+console.log(document.head);
