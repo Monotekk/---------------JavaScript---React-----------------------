@@ -93,4 +93,18 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     setClock('.timer', deadline);
+
+    //modal windows
+    const btnSvyaz = document.querySelector('#svyaz'),
+            modalWindow = document.querySelector('.modal'),
+            modalClose = document.querySelector('.modal__close');
+
+            btnSvyaz.addEventListener('click', function(){
+                
+                modalWindow.style.display = 'block';
+            });
+            modalClose.addEventListener('click',function(){
+                console.log('ok');
+                modalWindow.style.display = 'none';
+            });
 });
