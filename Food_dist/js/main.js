@@ -1,13 +1,13 @@
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', function() {
 
     // Tabs
+    
+	let tabs = document.querySelectorAll('.tabheader__item'),
+		tabsContent = document.querySelectorAll('.tabcontent'),
+		tabsParent = document.querySelector('.tabheader__items');
 
-    let tabs = document.querySelectorAll('.tabheader__item'),
-        tabsContent = document.querySelectorAll('.tabcontent'),
-        tabsParent = document.querySelector('.tabheader__items');
-
-    function hideTabContent() {
-
+	function hideTabContent() {
+        
         tabsContent.forEach(item => {
             item.classList.add('hide');
             item.classList.remove('show', 'fade');
@@ -16,32 +16,32 @@ window.addEventListener('DOMContentLoaded', function () {
         tabs.forEach(item => {
             item.classList.remove('tabheader__item_active');
         });
-    }
+	}
 
-    function showTabContent(i = 0) {
+	function showTabContent(i = 0) {
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
     }
-
+    
     hideTabContent();
     showTabContent();
 
-    tabsParent.addEventListener('click', function (event) {
-        const target = event.target;
-        if (target && target.classList.contains('tabheader__item')) {
+	tabsParent.addEventListener('click', function(event) {
+		const target = event.target;
+		if(target && target.classList.contains('tabheader__item')) {
             tabs.forEach((item, i) => {
                 if (target == item) {
                     hideTabContent();
                     showTabContent(i);
                 }
             });
-        }
+		}
     });
+    
+    // Timer
 
-    //timer
-
-    const deadline = '2022-05-11';
+    const deadline = '2020-05-11';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -94,17 +94,56 @@ window.addEventListener('DOMContentLoaded', function () {
 
     setClock('.timer', deadline);
 
-    //modal windows
-    const btnSvyaz = document.querySelector('#svyaz'),
-            modalWindow = document.querySelector('.modal'),
-            modalClose = document.querySelector('.modal__close');
+    // Modal
 
-            btnSvyaz.addEventListener('click', function(){
-                
-                modalWindow.style.display = 'block';
-            });
-            modalClose.addEventListener('click',function(){
-                console.log('ok');
-                modalWindow.style.display = 'none';
-            });
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
+        modal = document.querySelector('.modal'),
+        modalCloseBtn = document.querySelector('[data-close]');
+
+    modalTrigger.forEach(btn => {
+        btn.addEventListener('click', openModal);
+    });
+
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+        clearInterval(modalTimerId);
+    }
+    
+    modalCloseBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === "Escape" && modal.classList.contains('show')) { 
+            closeModal();
+        }
+    });
+
+    // const modalTimerId = setTimeout(openModal, 3000);
+    // Закомментировал, чтобы не отвлекало
+
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+    window.addEventListener('scroll', showModalByScroll);
+
+    // Используем классы для создание карточек меню
+
+    
+
 });
